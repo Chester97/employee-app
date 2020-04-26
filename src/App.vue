@@ -5,10 +5,7 @@
       <v-container>
         <v-row>
           <Select v-bind:items="slots" :setDepartmentPick="setDepartmentPick" />
-          <RangeSlider
-            v-bind:salary="initSalary"
-            :setRangeValues="setRangeValues"
-          />
+          <RangeSlider v-bind:salary="initSalary" :setRangeValues="setRangeValues" />
         </v-row>
         <Table
           tableTitle="New Table"
@@ -18,7 +15,7 @@
         />
         <div class="row">
           <v-col cols="9">
-            <h1>Total totalSum of all departments</h1>
+            <h1>Total sum of all departments</h1>
             <span>{{ totalSum }}</span>
           </v-col>
           <v-col cols="3">
@@ -34,14 +31,14 @@
   </v-app>
 </template>
 <script>
-import Navbar from './components/Navbar';
-import RangeSlider from './components/RangeSlider';
-import Select from './components/Select';
-import Table from './components/Table';
-import EmployeeService from './services/employee.service';
+import Navbar from "./components/Navbar";
+import RangeSlider from "./components/RangeSlider";
+import Select from "./components/Select";
+import Table from "./components/Table";
+import EmployeeService from "./services/employee.service";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     Navbar,
     RangeSlider,
@@ -71,25 +68,25 @@ export default {
       this.targetItems
     );
     this.headersSummary = EmployeeService.getHeaders(this.sumPerPage);
-    this.$on('setDepartmentPick', data => (this.department = data));
-    this.$on('addEmployee', data => {
+    this.$on("setDepartmentPick", data => (this.department = data));
+    this.$on("addEmployee", data => {
       this.targetItems = [data, ...this.targetItems];
       this.updateView();
     });
-    this.$on('setRangeValues', data => {
+    this.$on("setRangeValues", data => {
       const [min, max] = data;
       return (this.rangeFilter = { min, max });
     });
   },
   methods: {
     setRangeValues(range) {
-      this.$emit('setRangeValues', range);
+      this.$emit("setRangeValues", range);
     },
     setDepartmentPick(data) {
-      this.$emit('setDepartmentPick', data);
+      this.$emit("setDepartmentPick", data);
     },
     addEmployee(data) {
-      this.$emit('addEmployee', data);
+      this.$emit("addEmployee", data);
     },
     updateView() {
       this.initSalary = EmployeeService.getMaxMinSalary(this.targetItems);
@@ -109,8 +106,8 @@ export default {
       }
       const items = this.targetItems.filter(
         worker =>
-          worker.salary.split(' ')[0] >= min &&
-          worker.salary.split(' ')[0] <= max
+          worker.salary.split(" ")[0] >= min &&
+          worker.salary.split(" ")[0] <= max
       );
       if (this.department) {
         return items.filter(worker => worker.section === this.department);
